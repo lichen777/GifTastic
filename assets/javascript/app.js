@@ -1,7 +1,15 @@
-const tags = ["dogs", "cats", "birds", "goats", "lions", "pigs"];
-var q = "animals";
-var limit = 12;
-const address = "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=" + limit + "&q=";
+const app = {
+  tags : ["dogs", "cats", "birds", "goats", "lions", "pigs"],
+  q : "animals",
+  limit : 12,
+  address : "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=" + limit + "&q=",
+
+  renderButtons : function () {
+    
+  }
+
+
+}
 
 function renderButtons () {
   $("#tags").empty();
@@ -9,6 +17,7 @@ function renderButtons () {
     var button = $('<button class="mx-1 btn btn-secondary btn-sm">').attr("data-animal",tags[i]).text(tags[i]);
     $("#tags").append(button);
   }
+
 };
 
 function showImg () {
@@ -25,27 +34,28 @@ function showImg () {
     var results = response.data;  
 	//console.log(results)
 
-	for (var i = 0; i < results.length; i++) {
-	  var gifDiv = $('<div class="col-xs-18 col-sm-6 col-md-3">');
-	  var rating = results[i].rating;
-	  var p = $("<div class='caption'>").html("<p>Rating: " + rating + "</p>");
-	  var thumbnail = $('<div class="thumbnail">')
-      var animalImg = $("<img>");
-	  animalImg.attr("src", results[i].images.fixed_height_still.url).attr("data-still", results[i].images.fixed_height_still.url)
-	  .attr("data-animate", results[i].images.fixed_height.url).attr("data-state", "still").addClass("gif");
-	  thumbnail.append(animalImg);
+  	for (var i = 0; i < results.length; i++) {
+  	  var gifDiv = $('<div class="col-xs-18 col-sm-6 col-md-3">');
+  	  var rating = results[i].rating;
+  	  var p = $("<div>").text("Rating: " + rating);
+  	  var thumbnail = $('<div>')
+        var animalImg = $("<img>");
+  	  animalImg.attr("src", results[i].images.fixed_height_still.url).attr("data-still", results[i].images.fixed_height_still.url)
+  	  .attr("data-animate", results[i].images.fixed_height.url).attr("data-state", "still").addClass("gif");
+  	  
+      thumbnail.append(animalImg);
       thumbnail.append(p);
       gifDiv.append(thumbnail);
 
-	  $("#display").append(gifDiv);
-	}
+  	  $("#display").append(gifDiv);
+	  }
   });
 }
 
 $(document).ready(function() {
 
-	showImg();
 	renderButtons();
+  showImg();
 
 
 	$(".btn-sm").click(function() {
@@ -64,18 +74,17 @@ $(document).ready(function() {
 	});
 
 	$(".gif").click(function () {
-      var state = $(this).attr("data-state");
-      console.log(this);
+    var state = $(this).attr("data-state");
+    console.log(this);
 
-      if (state === "still") {
-        $(this).attr("src", $(this).attr("data-animate"));
-        $(this).attr("data-state", "animate");
-      } else {
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still");
+    if (state === "still") {
+      $(this).attr("src", $(this).attr("data-animate"));
+      $(this).attr("data-state", "animate");
+    } else { 
+      $(this).attr("src", $(this).attr("data-still"));
+      $(this).attr("data-state", "still");
       }
-    });
-
+  });
 
 })
 
